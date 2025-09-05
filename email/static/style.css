@@ -1,0 +1,12 @@
+/* static/style.css */
+body { font-family: system-ui, Arial, sans-serif; margin: 22px; background:#f6f8fb; color:#243647; }
+h1 { text-align:center; margin-bottom: 18px; }
+.top { display:flex; gap:16px; align-items:flex-start; justify-content:center; margin-bottom:16px; }
+.stats { display:flex; gap:10px; flex-wrap:wrap; max-width:680px; }
+.card { background:#fff; border-radius:10px; padding:8px 12px; box-shadow:0 2px 8px rgba(0,0,0,.06); }
+.charts { display:flex; gap:12px; align-items:center; }
+table { width:100%; border-collapse:collapse; background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,.06); margin-top: 12px; }
+th, td { padding:10px; border-bottom:1px solid #eee; vertical-align: top; text-align:left; }
+thead tr { background:#243647; color:white; }
+tr.urgent { background:#fff1f1; }
+pre.reply { white-space:pre-wrap; margin:0; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:13px; }

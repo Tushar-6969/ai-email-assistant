@@ -1,0 +1,95 @@
+<!-- templates/dashboard.html -->
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>AI Email Assistant Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <h1>Email Assistant Dashboard</h1>
+
+    <div class="top">
+      <div class="stats">
+        <div class="card">Total: {{ stats.total }}</div>
+        <div class="card">Urgent: {{ stats.urgent }}</div>
+        <div class="card">Positive: {{ stats.positive }}</div>
+        <div class="card">Negative: {{ stats.negative }}</div>
+        <div class="card">Neutral: {{ stats.neutral }}</div>
+        <div class="card">Last 24h: {{ stats.last_24h }}</div>
+        <div class="card">Resolved: {{ stats.resolved }}</div>
+        <div class="card">Pending: {{ stats.pending }}</div>
+      </div>
+
+      <div class="charts">
+        <canvas id="sentimentChart" width="300" height="200"></canvas>
+        <canvas id="priorityChart" width="300" height="200"></canvas>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>From</th>
+          <th>Subject</th>
+          <th>Sentiment</th>
+          <th>Priority</th>
+          <th>Requirements</th>
+          <th>Reply (AI)</th>
+          <th>Received</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for e in emails %}
+        <tr class="{{ 'urgent' if e.priority == 'Urgent' else '' }}">
+          <td>{{ e.id }}</td>
+          <td>{{ e.sender }}</td>
+          <td>{{ e.subject }}</td>
+          <td>{{ e.sentiment }}</td>
+          <td>{{ e.priority }}</td>
+          <td>{{ e.requirements }}</td>
+          <td><pre class="reply">{{ e.draft_reply }}</pre></td>
+          <td>{{ e.received_at }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <script>
+      const stats = {
+        positive: {{ stats.positive }},
+        negative: {{ stats.negative }},
+        neutral: {{ stats.neutral }},
+        urgent: {{ stats.urgent }},
+        pending: {{ stats.pending }}
+      };
+
+      // Sentiment pie
+      new Chart(document.getElementById('sentimentChart'), {
+        type: 'pie',
+        data: {
+          labels: ['Positive','Negative','Neutral'],
+          datasets: [{
+            data: [stats.positive, stats.negative, stats.neutral],
+            hoverOffset: 4
+          }]
+        }
+      });
+
+      // Priority bar
+      new Chart(document.getElementById('priorityChart'), {
+        type: 'bar',
+        data: {
+          labels: ['Urgent','Pending'],
+          datasets: [{
+            label: 'Count',
+            data: [stats.urgent, stats.pending]
+          }]
+        },
+        options: { scales: { y: { beginAtZero: true } } }
+      });
+    </script>
+  </body>
+</html>
